@@ -1,15 +1,18 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { sidebarConfig } from "../../config/sidebarConfig";
+import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = ({ role }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
 
   const config = sidebarConfig[role];
 
-  const handleClick = (item) => {
+  const handleClick = async (item) => {
     if (item.action === "LOGOUT") {
-      localStorage.clear();
+      // localStorage.clear();
+      await logout();
       navigate("/login");
       return;
     }

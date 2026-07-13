@@ -18,3 +18,41 @@
 .animate-scaleIn {
   animation: scaleIn 0.15s ease-out;
 }
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delay-1 {
+  animation: float 4.2s ease-in-out infinite;
+}
+
+.animate-float-delay-2 {
+  animation: float 4.8s ease-in-out infinite;
+}
+
+.animate-float-delay-3 {
+  animation: float 5.5s ease-in-out infinite;
+}
+
+.animate-float-delay-4 {
+  animation: float 4.5s ease-in-out infinite reverse;
+}
+
+.animate-float-delay-5 {
+  animation: float 6s ease-in-out infinite;
+}

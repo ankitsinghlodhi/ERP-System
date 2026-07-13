@@ -17,3 +17,7 @@ export const verifyFeesPayment = (data) => {
   console.log("📌 API: Verify fees payment");
   return api.post("/student/fees/verify-payment", data);
 };
+
+export const getAdminFeesDashboard = () => {
+  return api.get("/fees/admin-dashboard");
+};

@@ -9,8 +9,11 @@ const mongoose = require("mongoose");
  */
 exports.getStudentDepartments = async (req, res) => {
   try {
-    const collegeId = req.user.collegeId;
+    // const collegeId = req.user.collegeId;
 
+    
+   const collegeId = "697a4d1bf4e418a4f1bcaa66"; //default id for temporary use
+  
     const departments = await Department.find({ collegeId });
 
     const result = await Promise.all(

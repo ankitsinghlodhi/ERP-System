@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/public/Landing";
-import Login from "./pages/public/Login";
-import Signup from "./pages/public/Signup";
 import Faculty from "./pages/admin/Faculty";
 import Student from "./pages/admin/Student";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -9,7 +7,7 @@ import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import AttendancePage from "./pages/faculty/AttendancePage";
 import MarkAttendance from "./components/attendance/MarkAttendance";
-import Layout from "./components/dashboard/Layout";
+import Layout from "./pages/common/Layout";
 import ViewAttendancePage from "./components/attendance/ViewAttendStdntList";
 import AttendanceDetail from "./components/attendance/AttendanceDetail";
 import AttendanceProgress from "./components/attendance/AttendanceProgress";
@@ -20,20 +18,31 @@ import NotesListPage from "./components/notes/NotesListPage";
 import NotesUnitsPage from "./components/notes/NotesUnitsPage";
 import NotesSubjectsPage from "./components/notes/NotesSubjectsPage";
 import EventsPage from "./pages/common/EventsPage";
+import FeesDashboard from "./pages/admin/FeesDashboard";
+import ApplicationsPage from "./pages/student/ApplicationsPage";
+import InboxApplicationsPage from "./pages/common/InboxApplicationsPage";
+import { AuthProvider } from "./context/AuthContext";
+import Test from "./Test";
+
 function App() {
   return (
-    <BrowserRouter>
+     <AuthProvider>
+     <BrowserRouter>
       <Routes>
-           <Route path="/" element={<Home />} />
-           <Route path="/login" element={<Login />} />
-           <Route path="/signup" element={<Signup />} />
-        <Route element={<Layout />}>
+
+
+          <Route path="/test" element={<Test />} />
+
+          
+          <Route path="/" element={<Home />} />
+          <Route element={<Layout />}>
           {/* Admin*/}
           <Route path="/admin/attendance" element={<div>Attendance Page</div>} />
-          <Route path="/admin/fees" element={<div>Fees Page</div>} />
+          <Route path="/admin/fees" element={<FeesDashboard />} />
           <Route path="/admin/notices" element={<div>Notices Page</div>} />
           <Route path="/admin/faculty" element={<Faculty />} />
           <Route path="/admin/student" element={<Student />} />
+          <Route path="/admin/application" element={<InboxApplicationsPage />} />
 
          {/* faculty */}
          <Route path="/faculty/assignments" element={<div>Faculty Assignments</div>} />
@@ -44,6 +53,7 @@ function App() {
           <Route path="/faculty/attendance/view" element={<ViewAttendancePage />}/> 
           <Route path="/faculty/attendance/student/:studentId"element={<AttendanceDetail role="FACULTY" />}/>
           <Route path="/faculty/notes" element={<NotesSubjectsPage />} />
+          <Route path="/faculty/application" element={<InboxApplicationsPage />} />
 
 
          {/* students */}
@@ -52,6 +62,7 @@ function App() {
           <Route path="/student/exams" element={<div>Student Exams</div>} />
           <Route path="/student/notifications" element={<div>Student Notifications</div>} />
           <Route path="/student/notes" element={<NotesSubjectsPage />} />
+          <Route path="/student/application" element={<ApplicationsPage />} />
            {/* common */}
           <Route path="/announcement" element={<AnnouncementList />} />
           <Route path="/messenger" element={<MessengerPage />} />
@@ -68,6 +79,7 @@ function App() {
          
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

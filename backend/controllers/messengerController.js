@@ -16,6 +16,8 @@ const resolveDepartment = async (userId) => {
 /* =====================================================
    GET USERS FOR LEFT PANEL
 ===================================================== */
+const Department = require("../models/Department"); // adjust path as needed
+
 exports.getDepartmentUsers = async (req, res) => {
   try {
     console.log("📌 Fetching department users for messenger");
@@ -28,12 +30,18 @@ exports.getDepartmentUsers = async (req, res) => {
       return res.status(400).json({ message: "Department not resolved" });
     }
 
-    const users = await User.find({
-      departmentId,
-      _id: { $ne: userId },  //except self
-    }).select("name role");
+    const [department, users] = await Promise.all([
+      Department.findById(departmentId).select("name"),
+      User.find({
+        departmentId,
+        _id: { $ne: userId }, // except self
+      }).select("name role"),
+    ]);
 
-    res.status(200).json(users);
+    res.status(200).json({
+      departmentName: department?.name || "Department",
+      users,
+    });
   } catch (error) {
     console.error("❌ Failed to fetch department users", error);
     res.status(500).json({ message: "Failed to fetch users" });
@@ -45,7 +53,7 @@ exports.getDepartmentUsers = async (req, res) => {
 ===================================================== */
 exports.getPrivateConversation = async (req, res) => {
   try {
-    console.log("📌 Fetching private conversation");
+    console.log(" Fetching private conversation");
 
     const { receiverId } = req.params;
     const { userId } = req.user;

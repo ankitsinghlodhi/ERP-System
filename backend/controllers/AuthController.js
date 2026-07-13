@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const Student = require("../models/Student");
 const Faculty = require("../models/Faculty");
 const Fees= require("../models/Fees");
+const Department = require("../models/Department");
 
 
 // ADMIN signup (college signup)
@@ -79,13 +80,31 @@ exports.login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+//     res.status(200).json({
+//   token,
+//   user: {
+//     id: user._id,
+//     role: user.role
+//   }
+// });
+
+  //  cookie instead of sending token in response
+    res.cookie("token", token, {
+      httpOnly: true,      //  cannot be accessed by JS
+      secure: false,       //  true in production (HTTPS)
+      sameSite: "Lax",     // helps prevent CSRF
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    //  Send only user data (no token)
     res.status(200).json({
-  token,
-  user: {
-    id: user._id,
-    role: user.role
-  }
-});
+      success: true,
+      user: {
+        id: user._id,
+        role: user.role
+      }
+    });
+
 
   } catch (error) {
     res.status(500).json({ message: "Login failed", error });
@@ -93,6 +112,21 @@ exports.login = async (req, res) => {
 };
 
 
+
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+
+    res.json({
+      user: {
+        id: user._id,
+        role: user.role,
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch user" });
+  }
+};
 
 
 // ================= CREATE FACULTY =================
@@ -198,12 +232,12 @@ exports.createStudent = async (req, res) => {
       admissionYear,
       collegeId,
     });
-
-
+   
+    const department = await Department.findById(departmentId);
     await Fees.create({
-  studentId: student._id,
-  totalAmount: 7, 
-  paidAmount: 0,
+    studentId: student._id,
+    totalAmount: department.totalFees, 
+    paidAmount: 0,
   status: "PENDING",
   departmentId:departmentId,
 });

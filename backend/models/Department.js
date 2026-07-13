@@ -11,7 +11,7 @@ const departmentSchema = new mongoose.Schema(
     },
     totalFees:{
     type:Number,
-    default : 7,
+    default : 70000,
     },
   },
   { timestamps: true }

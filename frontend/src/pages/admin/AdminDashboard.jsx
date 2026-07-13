@@ -1,4 +1,4 @@
-import DashboardLayout from "../../components/dashboard/DashboardLayout";
+import DashboardLayout from "../common/DashboardLayout";
 
 const AdminDashboard = () => {
   return <DashboardLayout role="ADMIN" />;

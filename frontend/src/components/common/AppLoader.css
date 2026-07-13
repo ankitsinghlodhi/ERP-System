@@ -1,0 +1,373 @@
+/* =========================
+   Full Screen
+========================= */
+
+.loader-screen {
+  position: fixed;
+  inset: 0;
+  background: #f8fafc;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 99999;
+}
+
+.loader-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    overflow: visible;   /* change this */
+}
+
+/* =========================
+   Background Blobs
+========================= */
+
+.loader-bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  animation: blobFloat 10s ease-in-out infinite;
+}
+
+.loader-bg-1 {
+  width: 420px;
+  height: 420px;
+  background: rgba(37, 99, 235, 0.16);
+  top: -140px;
+  left: -100px;
+}
+
+.loader-bg-2 {
+  width: 500px;
+  height: 500px;
+  background: rgba(139, 92, 246, 0.15);
+  right: -160px;
+  bottom: -180px;
+  animation-delay: 2s;
+}
+
+.loader-bg-3 {
+  width: 320px;
+  height: 320px;
+  background: rgba(6, 182, 212, 0.12);
+  top: 45%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+/* =========================
+   Cube Scene
+========================= */
+
+.scene {
+  width: 180px;
+  height: 180px;
+  perspective: 900px;
+  margin-bottom: 45px;
+}
+
+.cube {
+  width: 90px;
+  height: 90px;
+
+  position: relative;
+
+  margin: auto;
+
+  transform-style: preserve-3d;
+
+  animation: cubeRotate 7s infinite linear;
+}
+
+/* =========================
+   Cube Faces
+========================= */
+
+.face {
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+  font-weight: 700;
+  color: white;
+
+  border-radius: 18px;
+
+  background: linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+  );
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+      0 20px 40px rgba(37,99,235,.28),
+      inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+/* =========================
+   3D Face Position
+========================= */
+
+.front {
+  transform: rotateY(0deg) translateZ(45px);
+}
+
+.back {
+  transform: rotateY(180deg) translateZ(45px);
+}
+
+.right {
+  transform: rotateY(90deg) translateZ(45px);
+}
+
+.left {
+  transform: rotateY(-90deg) translateZ(45px);
+}
+
+.top {
+  transform: rotateX(90deg) translateZ(45px);
+}
+
+.bottom {
+  transform: rotateX(-90deg) translateZ(45px);
+}
+
+/* =========================
+   Cube Glow
+========================= */
+
+.cube::after {
+  content: "";
+
+  position: absolute;
+
+  width: 140px;
+  height: 140px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+      rgba(37,99,235,.45),
+      rgba(124,58,237,.18),
+      transparent
+  );
+
+  filter: blur(25px);
+
+  z-index: -1;
+
+  animation: glowPulse 2.8s ease-in-out infinite;
+}
+
+/* =========================
+   Floating Effect
+========================= */
+
+.scene {
+  animation: sceneFloat 3.5s ease-in-out infinite;
+}
+
+/* =========================
+   Title
+========================= */
+.loader-title {
+  margin-top: 10px;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: .5px;
+
+  background: linear-gradient(
+      90deg,
+      #2563eb,
+      #4f46e5,
+      #7c3aed
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* =========================
+   Message
+========================= */
+
+.loader-message{
+  margin-top:14px;
+  color:#64748b;
+  font-size:18px;
+  font-weight:500;
+}
+
+/* =========================
+   Dots
+========================= */
+
+.loader-dots{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+}
+
+.loader-dots span{
+
+  width:12px;
+  height:12px;
+
+  border-radius:50%;
+
+  background:linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+  );
+
+  animation:dotBounce 1.4s infinite;
+}
+
+.loader-dots span:nth-child(2){
+  animation-delay:.2s;
+}
+
+.loader-dots span:nth-child(3){
+  animation-delay:.4s;
+}
+
+/* =========================
+   Animations
+========================= */
+
+@keyframes cubeRotate{
+
+  0%{
+      transform:
+      rotateX(-28deg)
+      rotateY(0deg);
+  }
+
+  25%{
+      transform:
+      rotateX(-28deg)
+      rotateY(90deg);
+  }
+
+  50%{
+      transform:
+      rotateX(-28deg)
+      rotateY(180deg);
+  }
+
+  75%{
+      transform:
+      rotateX(-28deg)
+      rotateY(270deg);
+  }
+
+  100%{
+      transform:
+      rotateX(-28deg)
+      rotateY(360deg);
+  }
+
+}
+
+@keyframes sceneFloat{
+
+  0%,100%{
+      transform:translateY(0px);
+  }
+
+  50%{
+      transform:translateY(-14px);
+  }
+
+}
+
+@keyframes glowPulse{
+
+  0%,100%{
+      transform:
+      translate(-50%,-50%)
+      scale(.95);
+      opacity:.55;
+  }
+
+  50%{
+      transform:
+      translate(-50%,-50%)
+      scale(1.15);
+      opacity:1;
+  }
+
+}
+
+@keyframes blobFloat{
+
+  0%,100%{
+      transform:
+      translateY(0)
+      translateX(0)
+      scale(1);
+  }
+
+  50%{
+      transform:
+      translateY(-30px)
+      translateX(20px)
+      scale(1.08);
+  }
+
+}
+
+@keyframes dotBounce{
+
+  0%,80%,100%{
+      transform:translateY(0);
+      opacity:.5;
+  }
+
+  40%{
+      transform:translateY(-10px);
+      opacity:1;
+  }
+
+}
+.loader-submessage {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.scene-small {
+  transform: scale(0.75);
+  margin-bottom: 16px;
+}

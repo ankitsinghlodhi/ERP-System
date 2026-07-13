@@ -1,17 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
 const TopNavbar = ({ role, onToggleSidebar }) => {
-
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const currentRole = role || user?.role;
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+  const handleLogout = async () => {
+    // localStorage.clear();
+    await logout();
+    navigate("/");
   };
 
   const handleLogoClick = () => {
-    if (role === "ADMIN") navigate("/admin/dashboard");
-    else if (role === "FACULTY") navigate("/faculty/dashboard");
-    else if (role === "STUDENT") navigate("/student/dashboard");
+    if (currentRole === "ADMIN") navigate("/admin/dashboard");
+    else if (currentRole === "FACULTY") navigate("/faculty/dashboard");
+    else if (currentRole === "STUDENT") navigate("/student/dashboard");
     else navigate("/");
   };
 
@@ -42,13 +46,13 @@ const TopNavbar = ({ role, onToggleSidebar }) => {
       {/* Center */}
       <div className="flex-1 flex justify-center gap-10 text-sm font-medium">
         <Link
-          to={`/${role?.toLowerCase()}/dashboard`}
+          to={`/${currentRole?.toLowerCase()}/dashboard`}
           className="border-b-2 border-blue-400 pb-1"
         >
           Home
         </Link>
 
-        <Link to={`/${role?.toLowerCase()}/attendance`}>
+        <Link to={`/${currentRole?.toLowerCase()}/attendance`}>
           Attendance
         </Link>
 
@@ -56,7 +60,7 @@ const TopNavbar = ({ role, onToggleSidebar }) => {
           Messenger
         </Link>
 
-        <Link to={`/${role?.toLowerCase()}/notifications`}>
+        <Link to={`/${currentRole?.toLowerCase()}/notifications`}>
           Notifications
         </Link>
       </div>

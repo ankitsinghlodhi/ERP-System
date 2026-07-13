@@ -130,78 +130,19 @@ exports.getCurrentAttendanceDay = async (req, res) => {
 
 
 
+const { getAttendanceSummary } = require("../services/attendanceSummaryService");
 
 exports.getAttendanceSummary = async (req, res) => {
   try {
-    console.log("📌 Fetching attendance summary");
+    const summary = await getAttendanceSummary(
+      req.params.studentId,
+      req.user.collegeId
+    );
 
-    const { studentId } = req.params;
-    const { collegeId } = req.user;
-
-    const attendance = await Attendance.findOne({
-      studentId,
-      collegeId,
+    res.status(200).json(summary);
+  } catch (err) {
+    res.status(500).json({
+      message: "Failed to fetch attendance summary",
     });
-
-    // default values
-    if (!attendance) {
-      console.log("ℹ️ No attendance found, returning defaults");
-
-      return res.status(200).json({
-        totalDays: 30,
-        presentDays: 0,
-        absentDays: 0,
-        pendingDays: 30,
-
-        presentPercentage: 0,
-        absentPercentage: 0,
-        pendingPercentage: 100,
-      });
-    }
-
-    const { presentDays, absentDays, totalDays } = attendance;
-
-    const updatedDays = presentDays + absentDays;
-    const pendingDays = totalDays - updatedDays;
-
-    const pendingPercentage = Math.round(
-      (pendingDays / totalDays) * 100
-    );
-
-    // if nothing marked yet
-    if (updatedDays < 1) {
-      return res.status(200).json({
-        totalDays,
-        presentDays,
-        absentDays,
-        pendingDays,
-
-        presentPercentage: 0,
-        absentPercentage: 0,
-        pendingPercentage,
-      });
-    }
-
-    const presentPercentage = Math.round(
-      (presentDays / updatedDays) * 100
-    );
-
-    const absentPercentage = Math.round(
-      (absentDays / updatedDays) * 100
-    );
-
-    res.status(200).json({
-      totalDays,
-      presentDays,
-      absentDays,
-      pendingDays,
-
-      presentPercentage,
-      absentPercentage,
-      pendingPercentage,
-    });
-  } catch (error) {
-    console.error("❌ Failed to fetch attendance summary");
-    res.status(500).json({ message: "Failed to fetch attendance summary" });
   }
 };

@@ -4,7 +4,7 @@ import PayFeesModal from "./PayFeesModel";
 const PayFeesCard = ({ fees, onSuccess }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const dueAmount = fees.totalAmount - fees.paidAmount;
+  const dueAmount = (fees.totalAmount - fees.paidAmount);
 
   return (
     <>

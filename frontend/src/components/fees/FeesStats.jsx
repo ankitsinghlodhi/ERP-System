@@ -3,9 +3,9 @@ const FeesStats = ({ fees }) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <Stat label="Paid" value={`₹${fees.paidAmount}`} accent="green" />
-      <Stat label="Due" value={`₹${due}`} accent="red" />
-      <Stat label="Total Fees" value={`₹${fees.totalAmount}`} accent="blue" />
+      <Stat label="Paid" value={`₹${fees.paidAmount*1000}`} accent="green" />
+      <Stat label="Due" value={`₹${due*1000}`} accent="red" />
+      <Stat label="Total Fees" value={`₹${fees.totalAmount*1000}`} accent="blue" />
       <Stat label="Status" value={fees.status} accent="yellow" />
     </div>
   );

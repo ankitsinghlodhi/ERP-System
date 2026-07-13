@@ -2,7 +2,14 @@ import axios from "axios";
 
 export const adminAPI = axios.create({
   baseURL: "http://localhost:5000/api/admin",
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
+  withCredentials: true,
+  // headers: {
+  //   Authorization: `Bearer ${localStorage.getItem("token")}`,
+  // },
 });
+
+
+// const api = axios.create({
+//   baseURL: "http://localhost:5000/api",
+//   withCredentials: true, // 🔥 IMPORTANT
+// });

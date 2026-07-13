@@ -7,7 +7,7 @@ const razorpay = require("../config/razorpay");
 /* ================= CREATE RAZORPAY ORDER ================= */
 exports.createFeesOrder = async (req, res) => {
   try {
-    console.log("📌 Creating fees order");
+    console.log(" Creating fees order");
 
     const { amount } = req.body;
     const {  collegeId } = req.user.collegeId;
@@ -23,9 +23,9 @@ exports.createFeesOrder = async (req, res) => {
     let studentId = student._id;
     let fees = await Fees.findOne({ studentId });
 
-    // 🧠 Create fees record if not exists
+    //  Create fees record if not exists
     if (!fees) {
-      console.log("ℹ️ Fees record not found, creating new one");
+      console.log(" Fees record not found, creating new one");
 
       const department = await Department.findById(student.departmentId);
 
@@ -55,7 +55,7 @@ exports.createFeesOrder = async (req, res) => {
       feesId: fees._id,
     });
   } catch (error) {
-    console.error("❌ Fees order creation failed", error);
+    console.error(" Fees order creation failed", error);
     res.status(500).json({ message: "Failed to create order" });
   }
 };
@@ -116,7 +116,7 @@ exports.verifyFeesPayment = async (req, res) => {
 
     await fees.save();
 
-    console.log("✅ Fees payment verified & updated");
+    console.log(" Fees payment verified & updated");
 
     res.status(200).json({
       message: "Payment successful",
@@ -124,7 +124,7 @@ exports.verifyFeesPayment = async (req, res) => {
       status: fees.status,
     });
   } catch (error) {
-    console.error("❌ Fees payment verification failed", error);
+    console.error(" Fees payment verification failed", error);
     res.status(500).json({ message: "Payment verification failed" });
   }
 };
@@ -133,53 +133,113 @@ exports.verifyFeesPayment = async (req, res) => {
 
 
 /* ================= GET STUDENT FEES SUMMARY ================= */
+const {
+  getFeesSummary,
+} = require("../services/feesSummaryService");
+
 exports.getMyFees = async (req, res) => {
   try {
-    console.log("📌 Fetching student fees summary");
+    console.log("Fetching student fees");
 
-    // const userId = req.user._id; // ✅ USER ID from token
+    const summary = await getFeesSummary(
+      req.user.userId
+    );
 
-    // 1️⃣ Find student using userId
-    const student = await Student.findOne({ userId: req.user.userId });
-    if (!student) {
-      return res.status(404).json({ message: "Student profile not found" });
-    }
-
-    // 2️⃣ Find fees record
-    let fees = await Fees.findOne({ studentId: student._id });
-
-    // 3️⃣ Create fees if not exists (old students)
-    if (!fees) {
-      console.log("ℹ️ Fees record not found, creating new");
-
-      const department = await Department.findById(student.departmentId);
-
-      fees = await Fees.create({
-        studentId: student._id,
-        departmentId: student.departmentId,
-        totalAmount: department.totalFees,
-        paidAmount: 0,
-        status: "PENDING",
-      });
-    }
-
-    let dueAmount = fees.totalAmount - fees.paidAmount;
-    let totalamount = 70000;
-    let paidamount=fees.paidAmount*10000;
-    dueAmount=totalamount-paidamount
-     
-    
-    
-      
-    
-    res.status(200).json({
-      totalAmount: totalamount,
-      paidAmount: paidamount,
-      dueAmount,
-      status: fees.status,
-    });
+    res.status(200).json(summary);
   } catch (error) {
-    console.error("❌ Failed to fetch fees summary", error);
-    res.status(500).json({ message: "Failed to fetch fees" });
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
+};
+
+
+exports.getAdminFeesDashboard = async (req, res) => {
+
+  try {
+
+    const collegeId = req.user.collegeId;
+
+    // Get all students of the college
+    const students = await Student.find({ collegeId })
+      .populate("departmentId", "name");
+
+    const studentIds = students.map(s => s._id);
+
+    // Fetch fees for those students
+    const feesList = await Fees.find({
+      studentId: { $in: studentIds }
+    });
+
+    // Map fees by studentId
+    const feesMap = {};
+
+    feesList.forEach(fee => {
+      feesMap[fee.studentId] = fee;
+    });
+
+    let totalFee = 0;
+    let collected = 0;
+
+    const studentsData = students.map(student => {
+
+      const fee = feesMap[student._id];
+
+      const total = fee?.totalAmount || 0;
+      const paid = fee?.paidAmount || 0;
+
+      totalFee += total;
+      collected += paid;
+
+      const remaining = total - paid;
+
+      return {
+
+        studentId: student._id,
+
+        name: student.name,
+
+        department: student.departmentId?.name || "N/A",
+        
+
+        semester: student.semester, 
+
+        totalFee: total,
+
+        paid,
+
+        remaining,
+
+        status: remaining === 0 ? "PAID" : "PENDING"
+
+      };
+
+    });
+
+    const pending = totalFee - collected;
+
+    res.status(200).json({
+
+      stats: {
+        totalFee,
+        collected,
+        pending
+      },
+
+      students: studentsData
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch fees dashboard"
+    });
+
+  }
+
 };

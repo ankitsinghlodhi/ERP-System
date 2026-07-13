@@ -5,16 +5,19 @@ import {
   deleteNote,
 } from "../../services/notesService";
 import UploadNoteModal from "../../components/notes/UploadNoteModal";
+import { useAuth } from "../../context/AuthContext";
 
 const NotesListPage = () => {
   const { subjectId, unit } = useParams();
+  const { user } = useAuth();
   const [notes, setNotes] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   const [previewImage, setPreviewImage] = useState(null);
   const [previewVideo, setPreviewVideo] = useState(null);
 
-  const role = localStorage.getItem("role");
+  // const role = localStorage.getItem("role");
+  const role = user?.role;
 
   useEffect(() => {
     loadNotes();

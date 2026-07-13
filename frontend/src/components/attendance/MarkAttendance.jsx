@@ -17,11 +17,11 @@ const MarkAttendance = () => {
 
   const fetchDay = async () => {
     try {
-      console.log("📌 Fetching current attendance day");
+      console.log(" Fetching current attendance day");
       const res = await getCurrentAttendanceDay();
       setCurrentDay(res?.data?.currentDay || 1);
     } catch (err) {
-      console.error("❌ Failed to fetch attendance day", err);
+      console.error("Failed to fetch attendance day", err);
       setCurrentDay(1);
     }
   };

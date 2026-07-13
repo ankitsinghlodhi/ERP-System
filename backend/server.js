@@ -1,6 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+
+
 
 dotenv.config();
 
@@ -14,13 +18,26 @@ const messengerRoutes = require("./routes/messengerRoutes");
 const announcementRoutes = require("./routes/announcementRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const notesRoutes = require("./routes/notesRoutes");
+const feesRoutes = require("./routes/feesRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
+
+
+
+
+
 const app = express();
 
 /* -------------------- GLOBAL MIDDLEWARE -------------------- */
-app.use(cors());
+app.use(cors({
+  origin:  "http://localhost:5173",
+   credentials: true
+}));
+
 app.use(express.json());
+ app.use(cookieParser());
 
 /* -------------------- ROUTES -------------------- */
+app.use("/api/applications", applicationRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/webhook", webhookRoutes);
 app.use("/api/admin", adminRoutes);
@@ -30,10 +47,11 @@ app.use("/api/announcements", announcementRoutes);
 app.use("/api/messenger", messengerRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/fees",feesRoutes);
 
 
 app.get("/", (req, res) => {
-  res.status(200).send("College ERP Backend is running 🚀");
+  res.status(200).send("Backend is running ");
 });
 
 

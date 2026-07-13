@@ -8,9 +8,10 @@ const categoryImages = {
   Seminar: "/event-images/seminar.jpg",
 };
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event , onRegister }) => {
   const imageSrc =
     categoryImages[event.category] || "/event-images/default.jpg";
+   
 
   return (
     <div className="bg-white rounded-xl shadow hover:shadow-lg transition duration-300 overflow-hidden">
@@ -45,12 +46,29 @@ const EventCard = ({ event }) => {
         </div>
 
         <div className="mt-3 text-sm font-medium text-green-600">
-          {event.registeredCount || 0}+ Registered
+          {event.registeredCount * 10}+  Registered
+          {/* {event.registeredCount ?? 0}+ Registered */}
         </div>
 
-        <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-          Register Now
-        </button>
+        {event.isRegistered ? (
+
+          <button
+            disabled
+            className="mt-3 w-full bg-green-500 text-white py-2 rounded-lg cursor-not-allowed"
+          >
+            Registered ✓
+         </button>
+
+        ) : (
+
+          <button
+            onClick={() => onRegister(event._id)}
+            className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+           Register Now
+         </button>
+
+)}
       </div>
     </div>
   );

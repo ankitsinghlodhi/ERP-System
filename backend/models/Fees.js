@@ -14,7 +14,7 @@ const feesSchema = new mongoose.Schema(
     },
     totalAmount: {
       type: Number,
-      default:7,
+      default:70000,
     },
     paidAmount: {
       type: Number,

@@ -1,14 +1,17 @@
 import { deleteAnnouncement } from "../../services/announcementServices";
+import { useAuth } from "../../context/AuthContext";
 
-const AnnouncementCard = ({ data }) => {
+const AnnouncementCard = ({ data, onRefresh }) => {
+  const { user } = useAuth();
 
-    
-const role = localStorage.getItem("role");
-const userId = localStorage.getItem("userId");
+  // const role = localStorage.getItem("role");
+  const role = user?.role;
+  // const userId = localStorage.getItem("userId");
+  const userId = user?._id;
 
-const canDelete =
-  role === "ADMIN" ||
-  (role === "FACULTY" && data.createdBy?._id === userId);
+  const canDelete =
+    role === "ADMIN" ||
+    (role === "FACULTY" && data.createdBy?._id === userId);
 
   return (
     <div className="bg-white p-4 rounded-xl shadow">

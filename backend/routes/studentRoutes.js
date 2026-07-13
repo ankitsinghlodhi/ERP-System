@@ -7,7 +7,15 @@ const Student = require("../models/Student");
 
 const { getAttendanceSummary,} = require("../controllers/attendanceController");
 const { createFeesOrder, verifyFeesPayment,getMyFees,} = require("../controllers/feesController");
+const { getDashboardSummary } = require("../controllers/studentController");
 
+//DASHBOARD
+router.get(
+  "/dashboard-summary",
+  auth,
+  isStudent,
+  getDashboardSummary
+);
 
 //FEES
 router.post(

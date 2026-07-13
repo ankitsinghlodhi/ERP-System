@@ -53,19 +53,52 @@ GET ALL EVENTS
 */
 exports.getAllEvents = async (req, res) => {
   try {
+
     const events = await Event.find({
       collegeId: req.user.collegeId,
     }).sort({ date: 1 });
 
+    let studentId = null;
+
+    // if logged user is student
+    if (req.user.role === "STUDENT") {
+      const student = await Student.findOne({ userId: req.user.userId });
+      studentId = student?._id;
+    }
+
+    const eventsWithMeta = await Promise.all(
+      events.map(async (event) => {
+
+        const count = await EventRegistration.countDocuments({
+          eventId: event._id,
+        });
+
+        let registered = false;
+
+        if (studentId) {
+          const reg = await EventRegistration.findOne({
+            eventId: event._id,
+            studentId,
+          });
+
+          registered = !!reg;
+        }
+
+        return {
+          ...event._doc,
+          registeredCount: count,
+          isRegistered: registered,
+        };
+      })
+    );
+
     res.status(200).json({
       success: true,
-      events,
+      events: eventsWithMeta,
     });
+
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
