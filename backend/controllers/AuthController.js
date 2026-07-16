@@ -90,11 +90,11 @@ exports.login = async (req, res) => {
 
   //  cookie instead of sending token in response
     res.cookie("token", token, {
-      httpOnly: true,      //  cannot be accessed by JS
-      secure: false,       //  true in production (HTTPS)
-      sameSite: "Lax",     // helps prevent CSRF
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
 
     //  Send only user data (no token)
     res.status(200).json({
