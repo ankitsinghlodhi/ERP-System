@@ -5,9 +5,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { demoLogin } from "../../../services/authService";
+import {useAuth} from "../../../context/AuthContext";
 
 const HeroButtons = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -29,6 +31,7 @@ const HeroButtons = () => {
         const response = await demoLogin("STUDENT");
   
         const { user } = response;
+        setUser(user);
   
   
         if (user.role === "ADMIN") {
