@@ -2,8 +2,54 @@ import {
   ArrowRight,
   PlayCircle,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { demoLogin } from "../../../services/authService";
 
 const HeroButtons = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleExplore = () => {
+    const section = document.getElementById("feature-showcase");
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+      try {
+        const response = await demoLogin("STUDENT");
+  
+        const { user } = response;
+  
+  
+        if (user.role === "ADMIN") {
+          navigate("/admin/dashboard");
+        } else if (user.role === "FACULTY") {
+          navigate("/faculty/dashboard");
+        } else if (user.role === "STUDENT") {
+          navigate("/student/dashboard");
+        } else {
+          setError("Invalid user role.");
+        }
+      } catch (err) {
+        setError(
+          err.response?.data?.message ||
+            "Invalid email or password."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
   return (
     <div className="flex flex-wrap items-center gap-4">
 
@@ -30,6 +76,7 @@ const HeroButtons = () => {
         items-center
         gap-3
         "
+        onClick={handleSubmit}
       >
         Launch Demo
 
@@ -41,12 +88,12 @@ const HeroButtons = () => {
           group-hover:translate-x-1
           "
         />
-
       </button>
 
       {/* Secondary */}
 
       <button
+        onClick={handleExplore}
         className="
         group
         px-7

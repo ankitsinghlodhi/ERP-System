@@ -20,6 +20,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const notesRoutes = require("./routes/notesRoutes");
 const feesRoutes = require("./routes/feesRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 
 
@@ -61,6 +62,7 @@ app.use("/api/messenger", messengerRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/fees",feesRoutes);
+app.use("/api/ai", aiRoutes);
 
 
 app.get("/", (req, res) => {

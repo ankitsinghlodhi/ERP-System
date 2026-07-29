@@ -7,7 +7,7 @@ const razorpay = require("../config/razorpay");
 /* ================= CREATE RAZORPAY ORDER ================= */
 exports.createFeesOrder = async (req, res) => {
   try {
-    console.log(" Creating fees order");
+    
 
     const { amount } = req.body;
     const {  collegeId } = req.user.collegeId;

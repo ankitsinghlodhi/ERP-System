@@ -22,11 +22,13 @@ import FeesDashboard from "./pages/admin/FeesDashboard";
 import ApplicationsPage from "./pages/student/ApplicationsPage";
 import InboxApplicationsPage from "./pages/common/InboxApplicationsPage";
 import { AuthProvider } from "./context/AuthContext";
+import { AiProvider } from "./context/AiContext";
 import Test from "./Test";
 
 function App() {
   return (
      <AuthProvider>
+       <AiProvider>
      <BrowserRouter>
       <Routes>
 
@@ -79,6 +81,7 @@ function App() {
          
       </Routes>
     </BrowserRouter>
+    </AiProvider>
     </AuthProvider>
   );
 }

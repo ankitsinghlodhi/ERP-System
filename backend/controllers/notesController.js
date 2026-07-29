@@ -64,7 +64,7 @@ exports.getNotes = async (req, res) => {
 /* ================= UPLOAD NOTE ================= */
 exports.uploadNotes = async (req, res) => {
   try {
-    console.log("Uploading note");
+    //console.log("Uploading note");
 
     if (req.user.role !== "FACULTY") {
       return res.status(403).json({ message: "Only faculty can upload notes" });
@@ -106,7 +106,7 @@ exports.uploadNotes = async (req, res) => {
       departmentId,
     });
 
-    console.log("Note uploaded successfully");
+    //console.log("Note uploaded successfully");
 
     res.status(201).json(notes);
   } catch (error) {
@@ -116,7 +116,7 @@ exports.uploadNotes = async (req, res) => {
 };
 
 
-/* ================= DELETE NOTE ================= */
+/* ================= DELETE NOTES ================= */
 exports.deleteNotes = async (req, res) => {
   try {
     console.log("Deleting note");

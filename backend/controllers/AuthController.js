@@ -111,6 +111,62 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.demoLogin = async (req, res) => {
+  try {
+   // const { email, password } = req.body;
+    //const { role } = req.body;
+    const email = "rita123@gmail.com";
+    const password = "rita123";
+
+    const user = await User.findOne({ email, isActive: true });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id,
+         role: user.role, 
+         collegeId: user.collegeId
+       },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+//     res.status(200).json({
+//   token,
+//   user: {
+//     id: user._id,
+//     role: user.role
+//   }
+// });
+
+  //  cookie instead of sending token in response
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+    //  Send only user data (no token)
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        role: user.role
+      }
+    });
+
+
+  } catch (error) {
+    res.status(500).json({ message: "Login failed", error });
+  }
+};
 
 
 exports.getMe = async (req, res) => {

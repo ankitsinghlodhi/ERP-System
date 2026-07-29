@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center md:justify-center gap-6 text-sm text-gray-600">
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
-          <span>© 2026 COLLEGE CONNECT</span>
+          <span>© 2026 COLLEGE CUBE</span>
         </div>
       </div>
     </footer>

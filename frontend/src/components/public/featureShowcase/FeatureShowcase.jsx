@@ -11,16 +11,17 @@ const FeatureShowcase = () => {
 
   return (
     <section
-      className="
-      relative
-      overflow-hidden
-      py-32
-      bg-gradient-to-b
-      from-white
-      via-slate-50/40
-      to-white
-      "
-    >
+  id="feature-showcase"
+  className="
+  relative
+  overflow-hidden
+  py-32
+  bg-gradient-to-b
+  from-white
+  via-slate-50/40
+  to-white
+  "
+>
       {/* Background Blur */}
 
       <div

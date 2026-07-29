@@ -70,6 +70,11 @@ export const loginUser = async (data) => {
   return res.data;
 };
 
+export const demoLogin = async (role) => {
+  const res = await api.post("/auth/demo-login", { role });
+  return res.data;
+}
+
 /* =======================
    ADMIN PROTECTED API
    ======================= */

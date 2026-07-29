@@ -1,61 +1,11 @@
-import {
-  Users,
-  GraduationCap,
-  Building2,
-  IndianRupee,
-  BookOpen,
-  Megaphone,
-  FileSignature,
-} from "lucide-react";
+
 
 import { useNavigate } from "react-router-dom";
 import SectionCard from "../common/SectionCard";
+import { dashboardConfig } from "../../../config/dashboardConfig";
 
-const actions = [
-  {
-    title: "Students",
-    path: "/admin/student",
-    icon: Users,
-    color: "bg-blue-500",
-  },
-  {
-    title: "Faculty",
-    path: "/admin/faculty",
-    icon: GraduationCap,
-    color: "bg-green-500",
-  },
-  {
-    title: "Departments",
-    path: "/admin/departments",
-    icon: Building2,
-    color: "bg-purple-500",
-  },
-  {
-    title: "Fees",
-    path: "/admin/fees",
-    icon: IndianRupee,
-    color: "bg-orange-500",
-  },
-  {
-    title: "Courses",
-    path: "/admin/course",
-    icon: BookOpen,
-    color: "bg-pink-500",
-  },
-  {
-    title: "Announcements",
-    path: "/announcement",
-    icon: Megaphone,
-    color: "bg-red-500",
-  },
-  {
-      title: "Applications",
-       path: "/admin/application",
-      icon: FileSignature,
-      color: "indigo",
-     
-    },
-];
+const actions = dashboardConfig.ADMIN.quickActions;
+
 
 const AdminQuickManagement = () => {
   const navigate = useNavigate();
