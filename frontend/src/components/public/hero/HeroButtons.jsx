@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { demoLogin } from "../../../services/authService";
 import {useAuth} from "../../../context/AuthContext";
+import AppLoader from "../../common/AppLoader";
 
 const HeroButtons = () => {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const HeroButtons = () => {
 
   return (
     <div className="flex flex-wrap items-center gap-4">
+      {loading && <AppLoader />}
 
       {/* Primary */}
 

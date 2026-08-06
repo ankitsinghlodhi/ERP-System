@@ -7,8 +7,8 @@ exports.chatWithAI = async (req, res) => {
     const {
       message,
     } = req.body;
-    console.log("Request body:", req.body);
-    console.log("Authenticated user:", req.user);
+    // console.log("Request body:", req.body);
+    // console.log("Authenticated user:", req.user);
 
     const reply =
       await aiService.chat({

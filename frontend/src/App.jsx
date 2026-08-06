@@ -23,6 +23,8 @@ import ApplicationsPage from "./pages/student/ApplicationsPage";
 import InboxApplicationsPage from "./pages/common/InboxApplicationsPage";
 import { AuthProvider } from "./context/AuthContext";
 import { AiProvider } from "./context/AiContext";
+import About from "./pages/public/About";
+import Instructions from "./pages/public/Instructions";
 import Test from "./Test";
 
 function App() {
@@ -78,6 +80,8 @@ function App() {
          <Route path="/admin/dashboard" element={<AdminDashboard />} />
          <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
          <Route path="/student/dashboard" element={<StudentDashboard />} />
+         <Route path="/about" element={<About />} />
+          <Route path="/instructions" element={<Instructions />} />
          
       </Routes>
     </BrowserRouter>
